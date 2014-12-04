@@ -22,26 +22,21 @@ func toInt(str string) int {
 	return int(num)
 }
 
-var DEFAULT_FROM = 2000
-var DEFAULT_TO = 40000
-
 func main() {
 	flag.Parse()
 
-	var from int
-	var to int
+	var port int
 
 	if len(flag.Args()) == 0 {
-		from = DEFAULT_FROM
-		to = DEFAULT_TO
+		port = chooseport.Random()
+	} else if len(flag.Args()) == 1 {
+		from := toInt(flag.Arg(0))
+		port = chooseport.From(from)
 	} else {
-		from = toInt(flag.Arg(0))
-		if len(flag.Args()) == 1 {
-			to = from + 1000
-		} else {
-			to = toInt(flag.Arg(1))
-		}
+		from := toInt(flag.Arg(0))
+		to := toInt(flag.Arg(1))
+		port = chooseport.Between(from, to)
 	}
 
-	println(chooseport.ChoosePort(from, to))
+	println(port)
 }
